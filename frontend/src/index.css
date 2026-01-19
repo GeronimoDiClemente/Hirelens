@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@theme {
+    --color-pastel-bg: #F0F9FF;
+    --color-pastel-card: #FFFFFF;
+    --color-pastel-primary: #BAE6FD;
+    --color-pastel-primaryHover: #7DD3FC;
+    --color-pastel-text: #0C4A6E;
+    --color-pastel-accent: #E0F2FE;
+
+    --font-family-sans: "Outfit", sans-serif;
+}
+
+@layer base {
+    body {
+        font-family: var(--font-family-sans);
+        background-color: var(--color-pastel-bg);
+        color: var(--color-pastel-text);
+    }
+}
