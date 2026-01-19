@@ -19,12 +19,14 @@ function App() {
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [managingTagsNote, setManagingTagsNote] = useState<Note | null>(null);
+  const [noteToDelete, setNoteToDelete] = useState<number | null>(null);
 
   const closeModals = () => {
     setIsCreateModalOpen(false);
     setIsCategoriesModalOpen(false);
     setEditingNote(null);
     setManagingTagsNote(null);
+    setNoteToDelete(null);
   };
 
   const loadData = async () => {
@@ -68,10 +70,15 @@ function App() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this note?')) return;
+  const handleDelete = (id: number) => {
+    setNoteToDelete(id);
+  };
+
+  const confirmDelete = async () => {
+    if (noteToDelete === null) return;
     try {
-      await deleteNote(id);
+      await deleteNote(noteToDelete);
+      setNoteToDelete(null);
       loadData();
     } catch (error) {
       console.error('Failed to delete note:', error);
@@ -229,6 +236,26 @@ function App() {
         )}
         <div className="mt-4 flex justify-end">
           <Button onClick={() => setManagingTagsNote(null)}>Done</Button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={noteToDelete !== null}
+        onClose={() => setNoteToDelete(null)}
+        title="Delete Note"
+      >
+        <div className="space-y-4">
+          <p className="text-gray-600">
+            Are you sure you want to delete this note? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-3">
+            <Button variant="ghost" onClick={() => setNoteToDelete(null)}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={confirmDelete}>
+              Delete
+            </Button>
+          </div>
         </div>
       </Modal>
     </div >
